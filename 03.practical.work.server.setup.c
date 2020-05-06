@@ -8,10 +8,9 @@
 int main()
 {
     int client_len, clientfd, sockfd;
-    struct sockadrr_in server_adr, client_adr;
+    struct sockaddr_in server_adr, client_adr;
 
     unsigned short port = 8784;
-    char* clientIP;
 
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -51,8 +50,8 @@ int main()
         printf("Listening. \n");
     }
 
-    client_len = sizeof(client_adr)
-    clientfd = accept(sockfd, (struct sockaddr *) &client_adr, &client_len)
+    client_len = sizeof(client_adr);
+    clientfd = accept(sockfd, (struct sockaddr *) &client_adr, &client_len);
     if(clientfd < 0)
     {
         printf("Can't accept connection. \n");
