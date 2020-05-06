@@ -4,16 +4,20 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <string.h>
 
 int main(int argc, char *argv[])
 {
     char hostname[100];
 
-    while(argv[0] == NULL)
+    if(argc < 2)
     {
         printf("Enter host name: ");
         scanf("%s", hostname);
-
+    }
+    else
+    {
+        strcpy(hostname,argv[1]);
     }
 
     struct hostent *host = gethostbyname(hostname);
