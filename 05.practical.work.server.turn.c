@@ -6,20 +6,21 @@
 #include <arpa/inet.h>
 #define MAX 1000
 
-void func(int sockfd) 
+void chat(int sockfd) 
 { 
     char buff[MAX]; 
     int n; 
-    for (;;) { 
+    while(1) 
+    { 
         bzero(buff, MAX); 
-  
+
         recv(sockfd, buff, sizeof(buff), 0); 
         printf("Client : %sServer : ", buff); 
 
         bzero(buff, MAX); 
         n = 0; 
         
-        while ((buff[n++] = getchar()) != '\n') ; 
+        while ((buff[n++] = getchar()) != '\n'); 
         send(sockfd, buff, sizeof(buff), 0); 
   
         if (strncmp("exit", buff, 4) == 0) { 
@@ -36,6 +37,7 @@ int main()
     unsigned short port = 8784;
     char *buffer = malloc(sizeof(buffer));
     
+    //create socket
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     if(sockfd < 0)
     {
@@ -52,6 +54,7 @@ int main()
     server_adr.sin_addr.s_addr = htonl(INADDR_ANY);
     server_adr.sin_port = htons(port);
 
+    //binding
     if (bind(sockfd, (struct sockaddr *) &server_adr, sizeof(server_adr)) < 0)
     {
         printf("Error binding. \n");
@@ -62,6 +65,7 @@ int main()
         printf("Successfully binding/ \n");
     }
     
+    //listening to the client
     if(listen(sockfd, 5) < 0)
     {
         printf("Error listening. \n");
@@ -72,6 +76,7 @@ int main()
         printf("Listening. \n");
     }
 
+    //accept connection
     client_len = sizeof(client_adr);
     clientfd = accept(sockfd, (struct sockaddr *) &client_adr, (socklen_t *) &client_len);
     if(clientfd < 0)
@@ -84,10 +89,9 @@ int main()
         printf("Accept connection. \n");
     }
 
-    // Function for chatting between client and server 
-    func(clientfd); 
-  
-    // After chatting close the socket 
+    //begin chatting
+    chat(clientfd);   
+    
     close(clientfd); 
 
     return 0;

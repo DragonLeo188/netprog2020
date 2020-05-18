@@ -6,23 +6,24 @@
 #include <arpa/inet.h>
 #define MAX 1000
 
-void func(int sockfd) 
+void chat(int sockfd) 
 { 
     char buff[MAX]; 
     int n; 
-    for (;;) { 
+    while(1)
+    { 
         bzero(buff, sizeof(buff)); 
         printf("Client : "); 
         n = 0; 
         
-        while ((buff[n++] = getchar()) != '\n') ; 
+        while ((buff[n++] = getchar()) != '\n'); 
         send(sockfd, buff, sizeof(buff), 0); 
         
         bzero(buff, sizeof(buff)); 
         recv(sockfd, buff, sizeof(buff), 0); 
         printf("Server : %s", buff); 
         
-        if ((strncmp(buff, "exit", 4)) == 0) 
+        if((strncmp(buff, "exit", 4)) == 0) 
         { 
             printf("Client Exit...\n"); 
             break; 
@@ -67,12 +68,12 @@ int main(int argc, char *argv[])
         printf("Socket succesfully created. \n");
     }
 
-
     memset(&server_adr, 0, sizeof(server_adr));
     server_adr.sin_family = AF_INET;
     memcpy((char *) &server_adr.sin_addr.s_addr, host->h_addr_list[0], host->h_length);
     server_adr.sin_port = htons(port);
     
+    //connect to the server
     if(connect(sockfd, (struct sockaddr *) &server_adr, sizeof(server_adr)) < 0)
     {
         printf("Can't connect.\n");
@@ -83,10 +84,9 @@ int main(int argc, char *argv[])
         printf("Connect succesfully. \n");
     }
 
-    // function for chat 
-    func(sockfd); 
-  
-    // close the socket 
+    //begin chatting 
+    chat(sockfd);
+   
     close(sockfd); 
 
 
