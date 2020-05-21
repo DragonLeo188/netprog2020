@@ -8,24 +8,26 @@
 
 void chat(int sockfd) 
 { 
-    char buff[MAX];
+    char buff[MAX]; //buffer
+    char msg[MAX] = ""; //store received messages
     char delimiter[2] = "\n"; 
     int n = 0; 
-    int len = 0;
 
     while(1) 
     { 
         bzero(buff, MAX); 
         
-        //receive messages
+        //receive message
         printf("Client : ");
         while(strcmp(&buff[n], delimiter) != 0)
         {
-            recv(sockfd, &buff[n], sizeof(buff[n]), 0);
-            printf("%s", buff);
+            recv(sockfd, &buff[n], sizeof(buff[n]), 0); 
+            printf("%c", buff[n]);
+
+            strcat(msg, &buff[n]);
         }
 
-        if(strncmp("exit", buff, 4) == 0) 
+        if(strncmp("exit", msg, 4) == 0) 
         { 
             printf("Server Exit...\n"); 
             break; 
