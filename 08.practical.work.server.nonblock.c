@@ -158,6 +158,3 @@ int main()
        
     return 0;
 }
-
-//load balancer == middle man
-// pass things from client to server and vice versa
